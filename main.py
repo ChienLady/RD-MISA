@@ -1,6 +1,4 @@
 import warnings
-
-from charset_normalizer import detect
 warnings.filterwarnings('ignore')
 
 import os
@@ -25,7 +23,6 @@ def build_model(model_name):
 		'Facenet': Facenet.loadModel,
 		'Facenet512': Facenet512.loadModel,
 		'DeepFace': FbDeepFace.loadModel,
-		'DeepID': DeepID.loadModel,
 		'ArcFace': ArcFace.loadModel
 	}
 	if model_name in models.keys():
@@ -69,8 +66,6 @@ def verify(img1, img2, align = True, normalization = 'base', model_name = 'ArcFa
 		threshold = 0.30
 	elif model_name == 'DeepFace':
 		threshold = 0.23
-	elif model_name == 'DeepID':
-		threshold = 0.015
 	elif model_name == 'ArcFace':
 		threshold = 0.68
 
@@ -185,7 +180,7 @@ def process(cmnd_img, test_vid, cam = True, model_name = 'ArcFace', log = True):
 				now = datetime.now()
 				current_time = now.strftime('%H:%M:%S')
 
-				file_name = 'log' + sep + str(model_name) + 'txt'
+				file_name = 'log' + sep + str(model_name) + '.txt'
 				f = open(file_name, 'a')
 				contents = str(current_time) + ' ' + str(r) + '\n'
 				f.write(contents)
@@ -213,12 +208,12 @@ def process(cmnd_img, test_vid, cam = True, model_name = 'ArcFace', log = True):
 	cv2.destroyAllWindows()
 
 if __name__ == '__main__':
-	done = ['VGG-Face']
-	models = ['OpenFace', 'Facenet', 'Facenet512', 'DeepFace', 'DeepID', 'ArcFace']
-	for model in models:
-		try:
-			process('cmnd_fake.png', 'real_face.mp4', cam = False, model_name = model)
-		except Exception as e:
-			print(e)
-			continue
+	# models = ['VGG-Face', 'OpenFace', 'Facenet', 'Facenet512', 'DeepFace', 'ArcFace']
+	# for model in models:
+	# 	try:
+	# 		process('cmnd_fake.png', 'real_face.mp4', cam = False, model_name = model)
+	# 	except Exception as e:
+	# 		print(e)
+	# 		continue
+	process('cmnd.png', 'real_face.mp4', cam = False, model_name = 'ArcFace', log = True)
 
